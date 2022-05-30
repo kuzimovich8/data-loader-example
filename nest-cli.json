@@ -1,0 +1,14 @@
+{
+  "language": "ts",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "src/app",
+  "compilerOptions": {
+    "assets": [
+      {
+        "include": "**/*.hbs",
+        "outDir": "dist/app",
+        "watchAssets": true
+      }
+    ]
+  }
+}
