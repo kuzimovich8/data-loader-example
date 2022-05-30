@@ -1,5 +1,5 @@
 Example project to test different variants to optimize query performance by batching/caching.
-The best results got using utility called [![data-loader](https://github.com/graphql/dataloader)]
+The best results got using utility called [[data-loader](https://github.com/graphql/dataloader)]
 
 ## Install / Run
 
