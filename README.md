@@ -10,8 +10,8 @@ $ git clone https://github.com/kuzimovich8/data-loader-example.git
 # Install deps
 $ yarn install
 
-# Run Docker container
-$ docker run -d --name trg-db -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=q1w2e3r4 -e POSTGRES_DB=trg -p 5431:5432
+# Run Docker containers
+$ docker-compose -f docker-compose.yml up -d
 
 # Run migrations and seed data
 $ yarn run refresh

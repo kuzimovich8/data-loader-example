@@ -56,12 +56,15 @@ export class UserService {
   }
 
   async getUser(id: string): Promise<UserEntity> {
+    /* typeorm cache */
+
     // return await this.userRepo.findOne(id, {
-    //   cache: { id, milliseconds: 60 * 1000 },
+    //   cache: { id, milliseconds: 90 * 1000 },
     // });
 
+    /* nestjs cache */
+
     // const cacheUser = await this.cacheManager.get<UserEntity>(id);
-    // // console.log(cacheUser);
     //
     // if (cacheUser) {
     //   return cacheUser;
@@ -72,10 +75,9 @@ export class UserService {
     // // console.log('after findOne(' + id + ')');
     // await this.cacheManager.set(id, user);
     //
-    // // const cacheUser1 = await this.cacheManager.get<UserEntity>(id);
-    // // console.log(cacheUser1);
-    //
     // return user;
+
+    /* no cache */
 
     return await this.userRepo.findOne(id);
   }

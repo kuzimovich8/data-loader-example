@@ -13,6 +13,14 @@ const baseConfig: PostgresConnectionOptions = {
   // logging: true,
   // logger: 'file',
   // cache: true,
+  // cache: {
+  //   type: 'redis',
+  //   options: {
+  //     host: 'localhost',
+  //     port: 6379,
+  //   },
+  //   ignoreErrors: true
+  // },
 };
 
 export default baseConfig;
