@@ -16,7 +16,9 @@ export class PostService {
   constructor(
     @InjectRepository(PostEntity)
     private readonly postRepo: Repository<PostEntity>,
-  ) {}
+  ) {
+    console.log('init PostService...');
+  }
 
   static entityToObjectMapper(postEntity: PostEntity): PostObject {
     return {

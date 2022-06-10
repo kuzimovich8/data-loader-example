@@ -16,18 +16,20 @@ import { PostEntity } from '@app/post/post.entity';
 import { UserObject } from '@app/user/objects/user.object';
 import { UserEntity } from '@app/user/user.entity';
 import { UserService } from '@app/user/user.service';
-// import { memoize } from '@utils/memoize';
+import { PostLoader } from '@app/post/post.loader';
+import { memoize } from '@utils/memoize';
 
 @Resolver(PostObject)
 export class PostResolver {
-  // load: (id: string) => UserEntity;
+  load: (id: string) => UserEntity;
 
   constructor(
     private readonly postService: PostService,
+    private readonly postLoader: PostLoader,
     private readonly userService: UserService,
   ) {
-    // const getUser = userService.getUser.bind(userService);
-    // this.load = memoize<UserEntity>(getUser);
+    const getUser = userService.getUserNoCache.bind(userService);
+    this.load = memoize<UserEntity>(getUser);
   }
 
   @Query(() => PostCollectionObject)
@@ -39,19 +41,30 @@ export class PostResolver {
     return PostService.collectionToObjectMapper(postEntityCollection);
   }
 
-  @ResolveField('fastUser', () => UserObject)
-  async getFastUser(
-    @Parent() postObject: PostObject,
-    @Context('usersLoader') usersLoader: DataLoader<string, UserEntity>,
-  ) {
-    const userEntity = await usersLoader.load(postObject.userId);
+  @ResolveField('slowUser', () => UserObject)
+  async getSlowUser(@Parent() postObject: PostObject) {
+    /* no cache */
+    const userEntity = await this.userService.getUserNoCache(postObject.userId);
+
+    /* typeorm cache */
+    // const userEntity = await this.userService.getUserTypeormCache(postObject.userId);
+
+    /* nestjs cache */
+    // const userEntity = await this.userService.getUserNestJSCache(postObject.userId);
+
+    /* getUserNoCache memoization */
+    // const userEntity = await this.load(postObject.userId);
+
     return UserService.entityToObjectMapper(userEntity);
   }
 
-  @ResolveField('slowUser', () => UserObject)
-  async getSlowUser(@Parent() postObject: PostObject) {
-    // const userEntity = await this.load(postObject.userId);
-    const userEntity = await this.userService.getUser(postObject.userId);
+  @ResolveField('fastUser', () => UserObject)
+  async getFastUser(
+    @Parent() postObject: PostObject,
+    // @Context('usersLoader') usersLoader: DataLoader<string, UserEntity>,
+  ) {
+    // const userEntity = await usersLoader.load(postObject.userId);
+    const userEntity = await this.postLoader.batchUsers.load(postObject.userId);
     return UserService.entityToObjectMapper(userEntity);
   }
 }

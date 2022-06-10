@@ -10,7 +10,7 @@ import { UserResolver } from '@app/user/user.resolver';
 @Module({
   imports: [
     TypeOrmModule.forFeature([UserEntity]),
-    // CacheModule.register({ ttl: 90, max: 10000 }),
+    CacheModule.register({ ttl: 90, max: 10000 }),
     // CacheModule.register({
     //   ttl: 90,
     //   max: 1000,

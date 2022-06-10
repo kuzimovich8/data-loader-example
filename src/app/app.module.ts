@@ -9,8 +9,8 @@ import { TypeOrmConfigModule } from './typeorm/typeorm-config.module';
 import { TypeOrmConfigService } from './typeorm/typeorm-config.service';
 import { SeedModule } from '@app/seed/seed.module';
 import { UserModule } from '@app/user/user.module';
-import { UserService } from '@app/user/user.service';
-import { createUsersLoader } from '@app/user/user.loader';
+// import { UserService } from '@app/user/user.service';
+// import { createUsersLoader } from '@app/user/user.loader';
 import { PostModule } from '@app/post/post.module';
 
 @Module({
@@ -21,9 +21,9 @@ import { PostModule } from '@app/post/post.module';
     }),
     GraphQLModule.forRootAsync<ApolloDriverConfig>({
       driver: ApolloDriver,
-      imports: [UserModule],
-      inject: [UserService],
-      useFactory: async (userService: UserService) => ({
+      // imports: [UserModule],
+      // inject: [UserService],
+      useFactory: async (/* userService: UserService */) => ({
         debug: true,
         playground: false,
         plugins: [ApolloServerPluginLandingPageLocalDefault()],
@@ -31,7 +31,7 @@ import { PostModule } from '@app/post/post.module';
         context: ({ req, res }) => ({
           req,
           res,
-          usersLoader: createUsersLoader(userService),
+          // usersLoader: createUsersLoader(userService),
         }),
         cors: {
           origin: ['https://studio.apollographql.com'],

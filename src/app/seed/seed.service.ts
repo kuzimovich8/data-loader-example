@@ -2,12 +2,15 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Connection } from 'typeorm';
 import { faker } from '@faker-js/faker';
 import { UserEntity } from '@app/user/user.entity';
+import { PostLoader } from '@app/post/post.loader';
 
 @Injectable()
 export class SeedService {
   constructor(
     @Inject(Connection)
     private readonly connection: Connection,
+
+    private readonly postLoader: PostLoader,
   ) {}
 
   async seedDb() {
@@ -30,6 +33,8 @@ export class SeedService {
           })),
         })),
       );
+
+      this.postLoader.checkConsole();
 
       console.log(`Success!`);
 

@@ -2,10 +2,12 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type UserObject {
+type PostObject {
   id: String!
-  email: String!
-  name: String!
+  text: String!
+  userId: String!
+  slowUser: UserObject!
+  fastUser: UserObject!
 }
 
 type PaginationObject {
@@ -15,21 +17,19 @@ type PaginationObject {
   totalPages: Int!
 }
 
-type UserCollectionObject {
-  items: [UserObject!]!
+type PostCollectionObject {
+  items: [PostObject!]!
   pagination: PaginationObject!
 }
 
-type PostObject {
+type UserObject {
   id: String!
-  text: String!
-  userId: String!
-  fastUser: UserObject!
-  slowUser: UserObject!
+  email: String!
+  name: String!
 }
 
-type PostCollectionObject {
-  items: [PostObject!]!
+type UserCollectionObject {
+  items: [UserObject!]!
   pagination: PaginationObject!
 }
 

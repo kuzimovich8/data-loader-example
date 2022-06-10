@@ -18,8 +18,8 @@ export class UserService {
     @InjectRepository(UserEntity)
     private readonly userRepo: Repository<UserEntity>,
 
-    // @Inject(CACHE_MANAGER)
-    // private readonly cacheManager: Cache,
+    @Inject(CACHE_MANAGER)
+    private readonly cacheManager: Cache,
   ) {}
 
   static entityToObjectMapper(userEntity: UserEntity): UserObject {
@@ -55,30 +55,28 @@ export class UserService {
     return await getCollection<UserEntity>({ queryBuilder, pagination });
   }
 
-  async getUser(id: string): Promise<UserEntity> {
-    /* typeorm cache */
-
-    // return await this.userRepo.findOne(id, {
-    //   cache: { id, milliseconds: 90 * 1000 },
-    // });
-
-    /* nestjs cache */
-
-    // const cacheUser = await this.cacheManager.get<UserEntity>(id);
-    //
-    // if (cacheUser) {
-    //   return cacheUser;
-    // }
-    //
-    // // console.log('before findOne(' + id + ')');
-    // const user = await this.userRepo.findOne(id);
-    // // console.log('after findOne(' + id + ')');
-    // await this.cacheManager.set(id, user);
-    //
-    // return user;
-
-    /* no cache */
-
+  async getUserNoCache(id: string): Promise<UserEntity> {
     return await this.userRepo.findOne(id);
+  }
+
+  async getUserTypeormCache(id: string): Promise<UserEntity> {
+    return await this.userRepo.findOne(id, {
+      cache: { id, milliseconds: 90 * 1000 },
+    });
+  }
+
+  async getUserNestJSCache(id: string): Promise<UserEntity> {
+    const cacheUser = await this.cacheManager.get<UserEntity>(id);
+
+    if (cacheUser) {
+      return cacheUser;
+    }
+
+    console.log('before findOne(' + id + ')');
+    const user = await this.userRepo.findOne(id);
+    console.log('after findOne(' + id + ')');
+    await this.cacheManager.set(id, user);
+
+    return user;
   }
 }

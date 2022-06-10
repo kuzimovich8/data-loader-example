@@ -10,8 +10,8 @@ const baseConfig: PostgresConnectionOptions = {
   cli: {
     migrationsDir: 'src/migrations',
   },
-  // logging: true,
-  // logger: 'file',
+  logger: 'file',
+  logging: true,
   // cache: true,
   // cache: {
   //   type: 'redis',

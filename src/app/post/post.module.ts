@@ -5,10 +5,11 @@ import { PostResolver } from '@app/post/post.resolver';
 import { PostService } from '@app/post/post.service';
 import { UserEntity } from '@app/user/user.entity';
 import { UserModule } from '@app/user/user.module';
+import { PostLoader } from '@app/post/post.loader';
 
 @Module({
   imports: [TypeOrmModule.forFeature([PostEntity, UserEntity]), UserModule],
-  providers: [PostService, PostResolver],
-  exports: [PostService],
+  providers: [PostService, PostLoader, PostResolver],
+  exports: [PostService, PostLoader],
 })
 export class PostModule {}
